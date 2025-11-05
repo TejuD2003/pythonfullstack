@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Task Deadlines</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 20px auto; padding: 10px; }
+    form input, form textarea { width: 100%; padding: 8px; margin: 6px 0; box-sizing: border-box; }
+    button { padding: 8px 12px; border-radius: 6px; background:#2b8efb; color:white; border:none; }
+    ul { list-style: none; padding: 0; }
+    li { padding: 6px; border-bottom: 1px solid #eee; }
+  </style>
+</head>
+<body>
+  <h1>🕓 Task Deadlines</h1>
+
+  <form action="/add" method="POST">
+    <input type="text" name="title" placeholder="Task title" required>
+    <textarea name="description" placeholder="Task description"></textarea>
+    <label>Notify email (optional): <input type="email" name="notify_email" placeholder="friend@example.com"></label>
+    <input type="datetime-local" name="due_date" required>
+    <button type="submit">Add Task</button>
+  </form>
+
+  <ul>
+    {% for task in tasks %}
+      <li><strong>{{ task.title }}</strong> — Due: {{ task.due_date }} — ({{ task.status }})</li>
+    {% endfor %}
+  </ul>
+<!-- replace this (remove or comment out):
+<script src="/socket.io/socket.io.js"></script>
+-->
+
+<!-- with this -->
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+  <!-- <script src="/socket.io/socket.io.js"></script> -->
+  <script>
+    const socket = io();
+    socket.on('deadline_alert', data => {
+      alert(`⚠ Task "${data.title}" is due soon! (${data.due})`);
+    });
+  </script>
+</body>
+</html>
