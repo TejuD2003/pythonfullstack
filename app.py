@@ -12,9 +12,11 @@ import traceback
 # optional .env loader
 try:
     from dotenv import load_dotenv
+    
     load_dotenv()
 except Exception:
     pass
+
 
 # ------------- Config & App -------------
 app = Flask(__name__)
